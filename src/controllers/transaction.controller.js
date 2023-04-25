@@ -10,7 +10,6 @@ export async function postTransaction(req,res){
     try {
         const user = await db.collection("sessions").findOne({token})
         const date = new Date()
-        
         await db.collection("come").insertOne({value, description, type:tipo, userId: user.userId, date:date.toLocaleDateString()})
     
         res.status(201).send("Transação feita!")
@@ -27,7 +26,7 @@ export async function getTransaction(req,res){
         const user = await db.collection("sessions").findOne({token})
         
         const transactions = await db.collection("come").find({userId: user.userId}).toArray()
-        let ct = 0
+
         transactions.map(o =>{
             delete o.userId
             delete o._id

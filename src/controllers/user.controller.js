@@ -21,6 +21,8 @@ export async function register(req, res){
     
 }
 
+
+
 export async function login(req, res){
     const {email, password} = req.body
     try{
@@ -48,7 +50,9 @@ export async function active(req, res){
         if(!active){
             return res.send(false)
         }
-        res.send(true)
+        const user = await db.collection("Users").findOne({_id: active.userId})
+        
+        res.send(user.name)
 
             
     } catch (err) {
