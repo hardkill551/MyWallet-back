@@ -1,4 +1,6 @@
+import { date } from "joi"
 import { db } from "../database/database.connection.js"
+import dayjs from "dayjs"
 
 export async function postTransaction(req,res){
     const {value, description} = req.body
@@ -10,7 +12,7 @@ export async function postTransaction(req,res){
     try {
         const user = await db.collection("sessions").findOne({token})
         const date = new Date()
-        await db.collection("come").insertOne({value, description, type:tipo, userId: user.userId, date:date.toLocaleDateString()})
+        await db.collection("come").insertOne({value, description, type:tipo, userId: user.userId, date:dayjs(date).format('DD/MM')})
     
         res.status(201).send("Transação feita!")
     } catch (err) {
