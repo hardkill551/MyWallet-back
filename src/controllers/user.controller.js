@@ -44,7 +44,9 @@ export async function login(req, res){
 }
 
 export async function active(req, res){
-    const token = req.headers.token
+    const {authorization} = req.headers
+    const token = authorization?.replace("Bearer ", "")
+
     try {
         const active = await db.collection("sessions").findOne({token})
         if(!active){
@@ -52,7 +54,7 @@ export async function active(req, res){
         }
         const user = await db.collection("Users").findOne({_id: active.userId})
         
-        res.send(user.name)
+        return res.send(user.name)
 
             
     } catch (err) {
